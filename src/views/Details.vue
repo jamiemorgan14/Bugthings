@@ -7,8 +7,8 @@
             <h5 class="card-title">{{bug.title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{bug.creator}}</h6>
             <p class="card-text">{{bug.description}}</p>
-            <a href="#" class="card-link">Edit Bug</a>
-            <a href="#" class="card-link">Set Bug As Complete</a>
+            <a v-if="!bug.closed" class="card-link">Edit Bug</a>
+            <a v-if="!bug.closed" @click="markComplete" class="card-link">Set Bug As Complete</a>
           </div>
         </div>
       </div>
@@ -72,6 +72,9 @@
         }
         this.showform = false
       },
+      markComplete() {
+        this.$store.dispatch('markComplete', this.id)
+      }
     },
     components: {
       Comment
@@ -79,4 +82,9 @@
   }
 </script>
 
-<style></style>
+<style scoped>
+  a {
+    cursor: pointer;
+    color: blue
+  }
+</style>

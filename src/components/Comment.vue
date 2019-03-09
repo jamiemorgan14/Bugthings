@@ -7,8 +7,8 @@
             <h5 class="card-title">{{note.creator}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{note.flagged}}</h6>
             <p class="card-text">{{note.content}}</p>
-            <a href="#" class="card-link">Edit Note</a>
-            <a href="#" class="card-link" @click.prevent="deleteNote(note._id)">Delete Note</a>
+            <a v-if="!completed" class="card-link">Edit Note</a>
+            <a v-if="!completed" class="card-link" @click.prevent="deleteNote(note._id)">Delete Note</a>
           </div>
         </div>
       </div>
@@ -19,6 +19,11 @@
 <script>
   export default {
     name: "comment",
+    data() {
+      return {
+        completed: this.$store.state.bugs.find(b => b._id == this.$route.params.id).closed
+      }
+    },
     props: ['id'],
     mounted() {
       if (this.$store.state.notes.length == 0) {
@@ -46,3 +51,12 @@
     components: {}
   }
 </script>
+
+<style>
+  .card-link {
+    background-color: lightcoral;
+    cursor: pointer;
+    border-radius: 8%;
+    padding: 5px
+  }
+</style>

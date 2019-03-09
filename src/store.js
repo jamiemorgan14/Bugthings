@@ -66,7 +66,7 @@ export default new Vuex.Store({
         })
     },
     markComplete({ commit, dispatch }, payload) {
-      _api.delete('bugs/' + payload.id)
+      _api.delete('bugs/' + payload)
         .then(res => {
           dispatch('getBugs')
         })

@@ -18,6 +18,8 @@
           </router-link>
           <td>{{bug.creator}}</td>
           <td>{{bug.closed}}</td>
+          <i @click="!bug.closed" v-if="bug.closed" class="fas fa-check-square"></i>
+          <i @click="bug.closed" v-if="!bug.closed" class="far fa-square"></i>
 
         </tr>
       </tbody>
