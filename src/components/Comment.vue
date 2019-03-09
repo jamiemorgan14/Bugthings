@@ -19,7 +19,7 @@
 <script>
   export default {
     name: "comment",
-    props: [],
+    props: ['id'],
     mounted() {
       if (this.$store.state.notes.length == 0) {
         this.$store.dispatch('getNotes', this.$route.params.id)

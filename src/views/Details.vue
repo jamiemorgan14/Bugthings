@@ -45,9 +45,8 @@
     name: "BugDetails",
     props: ['id'],
     mounted() {
-      if (this.$store.state.bugs.length == 0) {
-        this.$store.dispatch('getBugs')
-      }
+      this.$store.dispatch('getBugs', this.$route.params.id)
+      this.$store.dispatch('getNotes', this.$route.params.id)
     },
     data() {
       return {
@@ -55,20 +54,23 @@
           bug: this.id,
           flagged: 'pending'
         },
-        showform: false
+        showform: false,
       }
     },
     computed: {
       bug() {
         return this.$store.state.bugs.find(b => b._id == this.id) || {}
-      }
+      },
     },
     methods: {
       createNote() {
         this.$store.dispatch('createNote', this.newNote)
-        this.newNote = {}
+        this.newNote = {
+          bug: this.id
+        }
         this.showform = false
-      }
+        this.$store.dispatch('getNotes', this.id)
+      },
     },
     components: {
       Comment
