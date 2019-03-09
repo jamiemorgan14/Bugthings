@@ -52,6 +52,30 @@ export default new Vuex.Store({
         .then(res => {
           dispatch('getNotes', payload.bug)
         })
+    },
+    editBug({ commit, dispatch }, payload) {
+      _api.put('bugs/' + payload.id, payload)
+        .then(res => {
+          dispatch('getBug')
+        })
+    },
+    editNote({ commit, dispatch }, payload) {
+      _api.post('bugs/' + payload.bug + '/notes', payload)
+        .then(res => {
+          dispatch('getNotes')
+        })
+    },
+    markComplete({ commit, dispatch }, payload) {
+      _api.delete('bugs/' + payload.id)
+        .then(res => {
+          dispatch('getBugs')
+        })
+    },
+    deleteNote({ commit, dispatch }, payload) {
+      _api.delete('bugs/' + payload.bug + '/notes/' + payload._id)
+        .then(res => {
+          dispatch('getNotes', payload.bug)
+        })
     }
   }
 })

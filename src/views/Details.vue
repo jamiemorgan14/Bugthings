@@ -66,10 +66,10 @@
       createNote() {
         this.$store.dispatch('createNote', this.newNote)
         this.newNote = {
-          bug: this.id
+          bug: this.id,
+          flagged: 'pending'
         }
         this.showform = false
-        this.$store.dispatch('getNotes', this.id)
       },
     },
     components: {

@@ -8,7 +8,7 @@
             <h6 class="card-subtitle mb-2 text-muted">{{note.flagged}}</h6>
             <p class="card-text">{{note.content}}</p>
             <a href="#" class="card-link">Edit Note</a>
-            <a href="#" class="card-link">Delete Note</a>
+            <a href="#" class="card-link" @click.prevent="deleteNote(note._id)">Delete Note</a>
           </div>
         </div>
       </div>
@@ -25,15 +25,24 @@
         this.$store.dispatch('getNotes', this.$route.params.id)
       }
     },
-    data() {
-      return {}
-    },
     computed: {
       notes() {
         return this.$store.state.notes
       }
     },
-    methods: {},
+    methods: {
+      editNote() {
+
+      },
+      deleteNote(id) {
+        this.noteToDelete = {
+          bug: this.$route.params.id,
+          _id: id
+        }
+        this.$store.dispatch('deleteNote', this.noteToDelete)
+        this.$store.dispatch('getNotes', this.$route.params.id)
+      }
+    },
     components: {}
   }
 </script>
