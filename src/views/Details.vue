@@ -15,7 +15,8 @@
     </div>
     <div class="row">
       <div class="col">
-        <button class="btn btn-danger" @click="showform = !showform">{{showform ? 'Hide Form' : 'Make Note'}}</button>
+        <button v-if="!bug.closed" class="btn btn-danger" @click="showform = !showform">{{showform ? 'Hide Form' :
+          'Make Note'}}</button>
         <form v-if="showform" @submit.prevent="createNote">
           <div class="form-row">
             <div class="col">
