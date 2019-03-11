@@ -40,7 +40,9 @@
         return this.$store.state.bugs
       }
     },
-    methods: {},
+    methods: {
+
+    },
     components: {}
   }
 </script>

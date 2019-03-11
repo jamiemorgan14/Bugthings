@@ -7,10 +7,9 @@
             <h5 class="card-title">{{bug.title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{bug.creator}}</h6>
             <p class="card-text">{{bug.description}}</p>
-            <a v-if="!bug.closed" class="card-link">Edit Bug</a>
-            <a v-if="!bug.closed" class="card-link" @click="showform = !showform">{{showform ? 'Hide Form' :
-              'Make Note'}}</a>
-            <form v-if="showform" @submit.prevent="createNote">
+            <a v-if="!bug.closed" class="card-link" @click="editform = !editform">{{editform ? 'Hide Form' : 'Edit'}}</a>
+            <a v-if="!bug.closed" class="card-link" @click="bugform = !bugform">{{bugform ? 'Hide Form' : 'Make Note'}}</a>
+            <form v-if="bugform" @submit.prevent="createNote">
               <div class="form-row">
                 <div class="col">
                   <input v-model="newNote.creator" type="text" class="form-control" placeholder="Name" required>
@@ -22,6 +21,14 @@
               </div>
             </form>
             <a v-if="!bug.closed" @click="markComplete" class="card-link">Set Bug As Complete</a>
+            <form v-if="editform" @submit.prevent="editBug(bug)">
+              <div class="form-row">
+                <div class="col">
+                  <input v-model="bug.description" type="text" class="form-control" placeholder="Comment" required>
+                </div>
+                <button class="btn btn-success" type="submit">Edit Bug</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -38,7 +45,7 @@
     name: "BugDetails",
     props: ['id'],
     mounted() {
-      this.$store.dispatch('getBugs', this.$route.params.id)
+      this.$store.dispatch('getBug', this.id) || {}
     },
     data() {
       return {
@@ -46,14 +53,14 @@
           bug: this.id,
           flagged: 'pending'
         },
-        showform: false,
+        bugform: false,
+        editform: false
       }
     },
     computed: {
       bug() {
-        return this.$store.state.bugs.find(b => b._id == this.id) || {}
+        return this.$store.state.activeBug
       }
-
     },
     methods: {
       createNote() {
@@ -65,8 +72,9 @@
         this.$store.dispatch('markComplete', this.id)
         this.$store.dispatch('getNotes', this.id)
       },
-      editBug() {
-
+      editBug(bug) {
+        this.$store.dispatch('editBug', bug)
+        this.editform = false
       }
     },
     components: {

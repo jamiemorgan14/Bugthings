@@ -26,28 +26,29 @@
   export default {
     name: "comment",
     props: ['id'],
+    mounted() {
+      // this.$store.dispatch('getBug', this.$route.params.id) || {}
+      this.$store.dispatch('getNotes', this.$route.params.id) || {}
+    },
     data() {
       return {
-        completed: this.$store.state.bugs.find(b => b._id == this.$route.params.id).closed,
+        completed: false //|| this.$store.state.bugs.find(b => b._id == this.$route.params.id).closed
+        ,
         showform: false,
-      }
-    },
-    mounted() {
-      if (this.$store.state.notes.length == 0) {
-        this.$store.dispatch('getNotes', this.$route.params.id)
       }
     },
     computed: {
       notes() {
         return this.$store.state.notes
+      },
+      bug() {
+        return this.$store.state.activeBug
       }
     },
     methods: {
       editNote(note) {
-        debugger
         this.$store.dispatch('editNote', note)
         this.showform = false
-
       },
       deleteNote(note) {
         this.$store.dispatch('deleteNote', note)
