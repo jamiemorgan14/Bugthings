@@ -7,6 +7,7 @@
 
 
         <div class="dropdown">
+
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{note.flagged}}
@@ -63,10 +64,11 @@
     },
     methods: {
       editNote(note, status) {
-        debugger
         note.flagged = status
         this.$store.dispatch('editNote', note)
         this.showform = false
+        this.$store.dispatch('getNotes', this.$route.params.id)
+
       },
       deleteNote(note) {
         this.$store.dispatch('deleteNote', note)
