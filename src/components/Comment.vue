@@ -6,7 +6,7 @@
         <h6 class="card-subtitle mb-2 text-muted">{{note.flagged}}</h6>
         <p class="card-text">{{note.content}}</p>
         <a @click="showform = !showform" v-if="!completed" class="card-link">Edit Note</a>
-        <a v-if="!completed" class="card-link" @click.prevent="deleteNote(note._id)">Delete Note</a>
+        <a v-if="!completed" class="card-link" @click.prevent="deleteNote(note)">Delete Note</a>
         <form v-if="showform" @submit.prevent="editNote(note)">
           <div class="form-row">
             <div class="col-12">
@@ -44,15 +44,12 @@
     },
     methods: {
       editNote(note) {
+        debugger
         this.$store.dispatch('editNote', note)
         this.showform = false
       },
-      deleteNote(id) {
-        this.noteToDelete = {
-          bug: this.$route.params.id,
-          _id: id
-        }
-        this.$store.dispatch('deleteNote', this.noteToDelete)
+      deleteNote(note) {
+        this.$store.dispatch('deleteNote', note)
       }
     },
     components: {}

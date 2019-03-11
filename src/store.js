@@ -39,7 +39,7 @@ export default new Vuex.Store({
           commit('setActiveBug', res.data.results)
         })
     },
-    getActiveNote({ commit, dispatch }, payload) {
+    getNote({ commit, dispatch }, payload) {
       _api.get('bugs/' + payload.bug + '/notes/' + payload._id)
         .then(res => {
           commit('setActiveNote', res.data.results)
@@ -66,13 +66,13 @@ export default new Vuex.Store({
     editBug({ commit, dispatch }, payload) {
       _api.put('bugs/' + payload.id, payload)
         .then(res => {
-          dispatch('getBug')
+          dispatch('getBug', payload.bug)
         })
     },
     editNote({ commit, dispatch }, payload) {
       _api.put('bugs/' + payload.bug + '/notes/' + payload._id)
         .then(res => {
-          dispatch('getNotes', payload.bug)
+          dispatch('getNote', payload)
         })
     },
     markComplete({ commit, dispatch }, payload) {

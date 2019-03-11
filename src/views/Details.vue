@@ -64,6 +64,9 @@
       markComplete() {
         this.$store.dispatch('markComplete', this.id)
         this.$store.dispatch('getNotes', this.id)
+      },
+      editBug() {
+
       }
     },
     components: {
