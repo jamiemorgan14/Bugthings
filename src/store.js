@@ -12,7 +12,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     bugs: [],
-    notes: []
+    notes: [],
+    activeNote: {}
   },
   mutations: {
     setBugs(state, data) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     setNotes(state, data) {
       state.notes = data
+    },
+    setActiveNote(state, data) {
+      state.activeNote = data
     }
   },
   actions: {
@@ -33,6 +37,12 @@ export default new Vuex.Store({
       _api.get('bugs/' + payload)
         .then(res => {
           commit('setActiveBug', res.data.results)
+        })
+    },
+    getActiveNote({ commit, dispatch }, payload) {
+      _api.get('bugs/' + payload.bug + '/notes/' + payload._id)
+        .then(res => {
+          commit('setActiveNote', res.data.results)
         })
     },
     getNotes({ commit, dispatch }, payload) {
@@ -60,9 +70,9 @@ export default new Vuex.Store({
         })
     },
     editNote({ commit, dispatch }, payload) {
-      _api.post('bugs/' + payload.bug + '/notes', payload)
+      _api.put('bugs/' + payload.bug + '/notes/' + payload._id)
         .then(res => {
-          dispatch('getNotes')
+          dispatch('getNotes', payload.bug)
         })
     },
     markComplete({ commit, dispatch }, payload) {
