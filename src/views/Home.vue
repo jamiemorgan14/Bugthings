@@ -12,6 +12,8 @@
     </div>
     <div class="row">
       <div class="col-12 text-center">
+        <button class="btn btn-info" @click="sortBugs(), showbutton = !showbutton" v-if="!showbutton">Show Open Bugs</button>
+        <button class="btn btn-info" @click="getBugs(), showbutton = !showbutton" v-if="showbutton">Show All Bugs</button>
         <bug></bug>
       </div>
     </div>
@@ -27,9 +29,22 @@
     mounted() {
       this.$store.dispatch('getBugs')
     },
+    data() {
+      return {
+        showbutton: false
+      }
+    },
     components: {
       Bug,
       BugForm
+    },
+    methods: {
+      sortBugs() {
+        this.$store.dispatch('sortBugs')
+      },
+      getBugs() {
+        this.$store.dispatch('getBugs')
+      }
     }
   }
 </script>

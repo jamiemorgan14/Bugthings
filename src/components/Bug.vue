@@ -8,6 +8,7 @@
           <th scope="col">Issue</th>
           <th scope="col">Creator</th>
           <th scope="col">Open/close</th>
+
         </tr>
       </thead>
       <tbody>
@@ -17,9 +18,10 @@
             <td>{{bug.title}}</td>
           </router-link>
           <td>{{bug.creator}}</td>
-          <td>{{bug.closed}}</td>
-          <i @click="!bug.closed" v-if="bug.closed" class="fas fa-check-square"></i>
-          <i @click="bug.closed" v-if="!bug.closed" class="far fa-square"></i>
+          <td>
+            <i v-if="bug.closed" class="fas fa-check-square"></i>
+            <i v-if="!bug.closed" class="far fa-square"></i>
+          </td>
 
         </tr>
       </tbody>

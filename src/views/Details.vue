@@ -7,7 +7,6 @@
             <h5 class="card-title">{{bug.title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{bug.creator}}</h6>
             <p class="card-text">{{bug.description}}</p>
-            <a v-if="!bug.closed" class="card-link" @click="editform = !editform">{{editform ? 'Hide Form' : 'Edit'}}</a>
             <a v-if="!bug.closed" class="card-link" @click="bugform = !bugform">{{bugform ? 'Hide Form' : 'Make Note'}}</a>
             <form v-if="bugform" @submit.prevent="createNote">
               <div class="form-row">
@@ -21,14 +20,6 @@
               </div>
             </form>
             <a v-if="!bug.closed" @click="markComplete" class="card-link">Set Bug As Complete</a>
-            <form v-if="editform" @submit.prevent="editBug(bug)">
-              <div class="form-row">
-                <div class="col">
-                  <input v-model="bug.description" type="text" class="form-control" placeholder="Comment" required>
-                </div>
-                <button class="btn btn-success" type="submit">Edit Bug</button>
-              </div>
-            </form>
           </div>
         </div>
       </div>
@@ -65,12 +56,13 @@
     methods: {
       createNote() {
         this.$store.dispatch('createNote', this.newNote)
-        this.newNote = {}
+        this.newNote = {
+          bug: this.$route.params.id
+        }
         this.showform = false
       },
       markComplete() {
         this.$store.dispatch('markComplete', this.id)
-        this.$store.dispatch('getNotes', this.id)
       },
       editBug(bug) {
         this.$store.dispatch('editBug', bug)

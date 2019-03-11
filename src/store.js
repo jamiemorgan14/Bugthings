@@ -38,7 +38,8 @@ export default new Vuex.Store({
         })
     },
     getBug({ commit, dispatch }, payload) {
-      _api.get('bugs/' + (payload._id || payload))
+
+      _api.get('bugs/' + payload)
         .then(res => {
           commit('setActiveBug', res.data.results)
         })
@@ -68,21 +69,22 @@ export default new Vuex.Store({
         })
     },
     editBug({ commit, dispatch }, payload) {
-      _api.put('bugs/' + payload._id, payload.description)
+      debugger
+      _api.put('bugs/' + payload._id, payload)
         .then(res => {
-          dispatch('getBug', payload)
+          dispatch('getBug', payload._id)
         })
     },
     editNote({ commit, dispatch }, payload) {
       _api.put('bugs/' + payload.bug + '/notes/' + payload._id, payload)
         .then(res => {
-          dispatch('getNote', payload)
+          dispatch('getNote', res.data.results)
         })
     },
     markComplete({ commit, dispatch }, payload) {
       _api.delete('bugs/' + payload)
         .then(res => {
-          dispatch('getBugs')
+          dispatch('getBug', payload)
         })
     },
     deleteNote({ commit, dispatch }, payload) {
@@ -90,6 +92,13 @@ export default new Vuex.Store({
         .then(res => {
           dispatch('getNotes', payload.bug)
         })
+    },
+    sortBugs({ commit, dispatch }) {
+      _api.get('bugs')
+        .then(res => {
+          commit('setBugs', res.data.results.filter(bug => bug.closed == false))
+        }
+        )
     }
   }
 })

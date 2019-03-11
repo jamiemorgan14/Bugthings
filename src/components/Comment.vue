@@ -3,10 +3,27 @@
     <div class="card col-4" v-for="note in notes">
       <div class="card-body">
         <h5 class="card-title">{{note.creator}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{note.flagged}}</h6>
+
+
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{note.flagged}}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" @click="editNote(note, 'pending')">Pending</a>
+            <a class="dropdown-item" @click="editNote(note, 'completed')">Completed</a>
+            <a class="dropdown-item" @click="editNote(note, 'rejected')">Rejected</a>
+          </div>
+        </div>
+
+
+
+
         <p class="card-text">{{note.content}}</p>
-        <a @click="showform = !showform" v-if="!completed" class="card-link">Edit Note</a>
-        <a v-if="!completed" class="card-link" @click.prevent="deleteNote(note)">Delete Note</a>
+        <a @click="showform = !showform" v-if="!bug.closed" class="card-link">Edit Note</a>
+        <a v-if="!bug.closed" class="card-link" @click.prevent="deleteNote(note)">Delete Note</a>
         <form v-if="showform" @submit.prevent="editNote(note)">
           <div class="form-row">
             <div class="col-12">
@@ -27,12 +44,11 @@
     name: "comment",
     props: ['id'],
     mounted() {
-      // this.$store.dispatch('getBug', this.$route.params.id) || {}
       this.$store.dispatch('getNotes', this.$route.params.id) || {}
     },
     data() {
       return {
-        completed: false //|| this.$store.state.bugs.find(b => b._id == this.$route.params.id).closed
+        completed: false
         ,
         showform: false,
       }
@@ -46,7 +62,9 @@
       }
     },
     methods: {
-      editNote(note) {
+      editNote(note, status) {
+        debugger
+        note.flagged = status
         this.$store.dispatch('editNote', note)
         this.showform = false
       },
