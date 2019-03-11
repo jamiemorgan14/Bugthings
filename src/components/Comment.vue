@@ -47,6 +47,7 @@
         debugger
         this.$store.dispatch('editNote', note)
         this.showform = false
+
       },
       deleteNote(note) {
         this.$store.dispatch('deleteNote', note)
