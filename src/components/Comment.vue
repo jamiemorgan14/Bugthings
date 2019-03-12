@@ -1,37 +1,29 @@
 <template>
-  <div class="comment row">
-    <div class="card col-4" v-for="note in notes">
+  <div class="comment row mt-3  d-flex justify-content-between">
+    <div class="card note-card col-3 mx-3" v-for="note in notes">
       <div class="card-body">
         <h5 class="card-title">{{note.creator}}</h5>
-
-
-
         <div class="dropdown">
-
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <i v-if="!bug.closed" class="fas fa-pencil-alt mb-2" 
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{note.flagged}}
-          </button>
+        </i>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" @click="editNote(note, 'pending')">Pending</a>
             <a class="dropdown-item" @click="editNote(note, 'completed')">Completed</a>
             <a class="dropdown-item" @click="editNote(note, 'rejected')">Rejected</a>
           </div>
         </div>
-
-
-
-
         <p class="card-text">{{note.content}}</p>
-        <a @click="showform = !showform" v-if="!bug.closed" class="card-link">Edit Note</a>
+        <a @click="getNote(note)" v-if="!bug.closed" class="card-link">Edit Note</a>
         <a v-if="!bug.closed" class="card-link" @click.prevent="deleteNote(note)">Delete Note</a>
-        <form v-if="showform" @submit.prevent="editNote(note)">
+        <form class="mt-3" v-if="showform && note._id == activeNote._id" @submit.prevent="editNote(note)">
           <div class="form-row">
             <div class="col-12">
               <input v-model="note.content" type="text" class="form-control" placeholder="" required>
             </div>
             <div class="col">
-              <button class="btn btn-success" type="submit">Edit Note</button>
+              <button class="mt-3 btn btn-success" type="submit">Edit Note</button>
             </div>
           </div>
         </form>
@@ -46,11 +38,10 @@
     props: ['id'],
     mounted() {
       this.$store.dispatch('getNotes', this.$route.params.id) || {}
+      this.$store.dispatch('getBug', this.$route.params.id)
     },
     data() {
       return {
-        completed: false
-        ,
         showform: false,
       }
     },
@@ -60,18 +51,25 @@
       },
       bug() {
         return this.$store.state.activeBug
+      },
+      activeNote() {
+        return this.$store.state.activeNote
       }
     },
     methods: {
       editNote(note, status) {
-        note.flagged = status
+        note.flagged = status || note.flagged
         this.$store.dispatch('editNote', note)
         this.showform = false
-        this.$store.dispatch('getNotes', this.$route.params.id)
+        this.$store.dispatch('getBug', this.$route.params.id)
 
       },
       deleteNote(note) {
         this.$store.dispatch('deleteNote', note)
+      },
+      getNote(note) {
+        this.showform = !this.showform
+        this.$store.dispatch('getNote', note)
       }
     },
     components: {}
@@ -80,9 +78,17 @@
 
 <style>
   .card-link {
-    background-color: lightcoral;
+    background-color: white;
     cursor: pointer;
     border-radius: 8%;
     padding: 5px
+  }
+
+  .note-card {
+    background-color: #fff740;
+  }
+
+  i{
+    cursor: pointer
   }
 </style>

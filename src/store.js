@@ -38,7 +38,6 @@ export default new Vuex.Store({
         })
     },
     getBug({ commit, dispatch }, payload) {
-
       _api.get('bugs/' + payload)
         .then(res => {
           commit('setActiveBug', res.data.results)
@@ -69,7 +68,6 @@ export default new Vuex.Store({
         })
     },
     editBug({ commit, dispatch }, payload) {
-      debugger
       _api.put('bugs/' + payload._id, payload)
         .then(res => {
           dispatch('getBug', payload._id)

@@ -4,9 +4,9 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{bug.title}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{bug.creator}}</h6>
-            <p class="card-text">{{bug.description}}</p>
+            <h5 class="card-title">Title: {{bug.title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Created By: {{bug.creator}}</h6>
+            <p class="card-text"> Bug: {{bug.description}}</p>
             <a v-if="!bug.closed" class="card-link" @click="bugform = !bugform">{{bugform ? 'Hide Form' : 'Make Note'}}</a>
             <form v-if="bugform" @submit.prevent="createNote">
               <div class="form-row">
@@ -57,7 +57,8 @@
       createNote() {
         this.$store.dispatch('createNote', this.newNote)
         this.newNote = {
-          bug: this.$route.params.id
+          bug: this.$route.params.id,
+          flagged: 'pending'
         }
         this.showform = false
       },
@@ -79,5 +80,9 @@
   a {
     cursor: pointer;
     color: blue
+  }
+
+  .card {
+    background-color: #7afcff;
   }
 </style>
